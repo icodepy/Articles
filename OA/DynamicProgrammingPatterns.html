@@ -1,0 +1,290 @@
+<html>
+<head><title>dynamic-programming-patterns</title><head>
+<body>
+<h1><a href="https://leetcode.com/discuss/general-discussion/458695/dynamic-programming-patterns">dynamic-programming-patterns</a></h1>
+<div class="discuss-markdown-container"><p></p><p align="center"><img src="https://i.ibb.co/k8mkWn0/Copy-of-Blue-Pine-Trees-Snowflake-Invitation.png"></p><p>
+</p><p>Before starting the topic let me introduce myself. I am a Mobile Developer currently working in Warsaw and spending my free time for interview preparations. I started to prepare for interviews two years ago. At that time I should say I could not solve the two sum problem. Easy problems seemed to me like hard ones so most of the time I had to look at editorials and discuss section. Currently, I have solved ~800 problems and time to time participate in contests. I usually solve 3 problems in a contest and sometimes 4 problems. Ok, lets come back to the topic.</p><p>
+</p><p>Recently I have concentrated my attention on Dynamic Programming cause its one of the hardest topics in an interview prep. After solving ~140 problems in DP I have noticed that there are few patterns that can be found in different problems. So I did a research on that and find the following topics. I will not give complete ways how to solve problems but these patterns may be helpful in solving DP.</p><p>
+</p><h1>Patterns</h1>
+<hr>
+<p></p><p><a href="#Minimum-(Maximum)-Path-to-Reach-a-Target">Minimum (Maximum) Path to Reach a Target</a><br>
+<a href="#distinct-ways">Distinct Ways</a><br>
+<a href="#Merging-Intervals">Merging Intervals</a><br>
+<a href="#DP-on-Strings">DP on Strings</a><br>
+<a href="#Decision-Making">Decision Making</a></p><p>
+</p><h1>Minimum (Maximum) Path to Reach a Target</h1>
+<hr>
+<p></p><p>Generate problem statement for this pattern</p><p>
+</p><h3>Statement</h3>
+<blockquote>
+<p></p><p>Given a target find minimum (maximum)  cost / path / sum to reach the target.</p><p>
+</p></blockquote>
+<h3>Approach</h3>
+<blockquote>
+<p></p><p>Choose minimum (maximum) path among all possible paths before the current state, then add value for the current state.</p><p>
+</p></blockquote>
+<pre><code>routes[i] = min(routes[i<span class="hljs-number">-1</span>], routes[i<span class="hljs-number">-2</span>], ... , routes[i-k]) + cost[i]
+</code></pre>
+<p></p><p>Generate optimal solutions for all values in the target and return the value for the target.</p><p>
+</p><pre><code><span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt;= target; ++i) {
+   <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; ways.size(); ++j) {
+       <span class="hljs-keyword">if</span> (ways[j] &lt;= i) {
+           dp[i] = min(dp[i], dp[i - ways[j]]) + cost / path / sum;
+       }
+   }
+}
+ 
+<span class="hljs-keyword">return</span> dp[target]
+</code></pre>
+<h3>Similar Problems</h3>
+<p></p><p><a href="https://leetcode.com/problems/min-cost-climbing-stairs/">746. Min Cost Climbing Stairs</a> <code>Easy</code></p><p>
+</p><pre><code><span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">2</span>; i &lt;= n; ++i) {
+   dp[i] = min(dp[i<span class="hljs-number">-1</span>], dp[i<span class="hljs-number">-2</span>]) + (i == n ? <span class="hljs-number">0</span> : cost[i]);
+}
+ 
+<span class="hljs-keyword">return</span> dp[n]
+</code></pre>
+<p></p><p><a href="https://leetcode.com/problems/minimum-path-sum/">64. Minimum Path Sum</a> <code>Medium</code></p><p>
+</p><pre><code><span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt; n; ++i) {
+   <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">1</span>; j &lt; m; ++j) {
+       grid[i][j] = min(grid[i<span class="hljs-number">-1</span>][j], grid[i][j<span class="hljs-number">-1</span>]) + grid[i][j];
+   }
+}
+ 
+<span class="hljs-keyword">return</span> grid[n<span class="hljs-number">-1</span>][m<span class="hljs-number">-1</span>]
+</code></pre>
+<p></p><p><a href="https://leetcode.com/problems/coin-change/">322. Coin Change</a> <code>Medium</code></p><p>
+</p><pre><code><span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">1</span>; j &lt;= amount; ++j) {
+   <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; coins.size(); ++i) {
+       <span class="hljs-keyword">if</span> (coins[i] &lt;= j) {
+           dp[j] = min(dp[j], dp[j - coins[i]] + <span class="hljs-number">1</span>);
+       }
+   }
+}
+</code></pre>
+<p></p><p><a href="https://leetcode.com/problems/minimum-falling-path-sum/">931. Minimum Falling Path Sum</a> <code>Medium</code></p><p>
+</p><p><a href="https://leetcode.com/problems/minimum-cost-for-tickets/">983. Minimum Cost For Tickets</a> <code>Medium</code></p><p>
+</p><p><a href="https://leetcode.com/problems/2-keys-keyboard/">650. 2 Keys Keyboard</a> <code>Medium</code></p><p>
+</p><p><a href="https://leetcode.com/problems/perfect-squares/">279. Perfect Squares</a> <code>Medium</code></p><p>
+</p><p><a href="https://leetcode.com/problems/last-stone-weight-ii/">1049. Last Stone Weight II</a> <code>Medium</code></p><p>
+</p><p><a href="https://leetcode.com/problems/triangle/">120. Triangle</a> <code>Medium</code></p><p>
+</p><p><a href="https://leetcode.com/problems/ones-and-zeroes/">474. Ones and Zeroes</a> <code>Medium</code></p><p>
+</p><p><a href="https://leetcode.com/problems/maximal-square/">221. Maximal Square</a> <code>Medium</code></p><p>
+</p><p><a href="https://leetcode.com/problems/coin-change/">322. Coin Change</a> <code>Medium</code></p><p>
+</p><p><a href="https://leetcode.com/problems/tiling-a-rectangle-with-the-fewest-squares/">1240. Tiling a Rectangle with the Fewest Squares</a> <code>Hard</code></p><p>
+</p><p><a href="https://leetcode.com/problems/dungeon-game/">174. Dungeon Game</a> <code>Hard</code></p><p>
+</p><p><a href="https://leetcode.com/problems/minimum-number-of-refueling-stops/">871. Minimum Number of Refueling Stops</a> <code>Hard</code></p><p>
+</p><h1>Distinct Ways</h1>
+<hr>
+<p></p><p>Generate problem statement for this pattern</p><p>
+</p><h3>Statement</h3>
+<blockquote>
+<p></p><p>Given a target find a number of distinct ways to reach the target.</p><p>
+</p></blockquote>
+<h3>Approach</h3>
+<blockquote>
+<p></p><p>Sum all possible ways to reach the current state.</p><p>
+</p></blockquote>
+<pre><code>routes[i] = routes[i<span class="hljs-number">-1</span>] + routes[i<span class="hljs-number">-2</span>], ... , + routes[i-k]
+</code></pre>
+<p></p><p>Generate sum for all values in the target and return the value for the target.</p><p>
+</p><pre><code><span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt;= target; ++i) {
+   <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; ways.size(); ++j) {
+       <span class="hljs-keyword">if</span> (ways[j] &lt;= i) {
+           dp[i] += dp[i - ways[j]];
+       }
+   }
+}
+ 
+<span class="hljs-keyword">return</span> dp[target]
+</code></pre>
+<h3>Similar Problems</h3>
+<p></p><p><a href="https://leetcode.com/problems/climbing-stairs/">70. Climbing Stairs</a> <code>easy</code></p><p>
+</p><pre><code><span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> stair = <span class="hljs-number">2</span>; stair &lt;= n; ++stair) {
+   <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> step = <span class="hljs-number">1</span>; step &lt;= <span class="hljs-number">2</span>; ++step) {
+       dp[stair] += dp[stair-step];   
+   }
+}
+</code></pre>
+<p></p><p><a href="https://leetcode.com/problems/unique-paths/">62. Unique Paths</a> <code>Medium</code></p><p>
+</p><pre><code><span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt; m; ++i) {
+   <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">1</span>; j &lt; n; ++j) {
+       dp[i][j] = dp[i][j<span class="hljs-number">-1</span>] + dp[i<span class="hljs-number">-1</span>][j];
+   }
+}
+</code></pre>
+<p></p><p><a href="https://leetcode.com/problems/number-of-dice-rolls-with-target-sum/">1155. Number of Dice Rolls With Target Sum</a> <code>Medium</code></p><p>
+</p><pre><code><span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> rep = <span class="hljs-number">1</span>; rep &lt;= d; ++rep) {
+   <span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; new_ways(target+<span class="hljs-number">1</span>);
+   <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> already = <span class="hljs-number">0</span>; already &lt;= target; ++already) {
+       <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> pipe = <span class="hljs-number">1</span>; pipe &lt;= f; ++pipe) {
+           <span class="hljs-keyword">if</span> (already - pipe &gt;= <span class="hljs-number">0</span>) {
+               new_ways[already] += ways[already - pipe];
+               new_ways[already] %= mod;
+           }
+       }
+   }
+   ways = new_ways;
+}
+</code></pre>
+<p></p><p><strong>Note</strong></p><p>
+</p><p>Some questions point out the number of repetitions, in that case, add one more loop to simulate every repetition.</p><p>
+</p><p><a href="https://leetcode.com/problems/knight-probability-in-chessboard/">688. Knight Probability in Chessboard</a> <code>Medium</code></p><p>
+</p><p><a href="https://leetcode.com/problems/target-sum/">494. Target Sum</a> <code>Medium</code></p><p>
+</p><p><a href="https://leetcode.com/problems/combination-sum-iv/">377. Combination Sum IV</a> <code>Medium</code></p><p>
+</p><p><a href="https://leetcode.com/problems/knight-dialer/">935. Knight Dialer</a> <code>Medium</code></p><p>
+</p><p><a href="https://leetcode.com/problems/dice-roll-simulation/">1223. Dice Roll Simulation</a> <code>Medium</code></p><p>
+</p><p><a href="https://leetcode.com/problems/partition-equal-subset-sum/">416. Partition Equal Subset Sum</a> <code>Medium</code></p><p>
+</p><p><a href="https://leetcode.com/problems/soup-servings/">808. Soup Servings</a> <code>Medium</code></p><p>
+</p><p><a href="https://leetcode.com/problems/domino-and-tromino-tiling/">790. Domino and Tromino Tiling</a> <code>Medium</code></p><p>
+</p><p><a href="https://leetcode.com/problems/minimum-swaps-to-make-sequences-increasing/">801. Minimum Swaps To Make Sequences Increasing</a></p><p>
+</p><p><a href="https://leetcode.com/problems/number-of-longest-increasing-subsequence/">673. Number of Longest Increasing Subsequence</a> <code>Medium</code></p><p>
+</p><p><a href="https://leetcode.com/problems/unique-paths-ii/">63. Unique Paths II</a> <code>Medium</code></p><p>
+</p><p><a href="https://leetcode.com/problems/out-of-boundary-paths/">576. Out of Boundary Paths</a> <code>Medium</code></p><p>
+</p><p><a href="https://leetcode.com/problems/number-of-ways-to-stay-in-the-same-place-after-some-steps/">1269. Number of Ways to Stay in the Same Place After Some Steps</a> <code>Hard</code></p><p>
+</p><p><a href="https://leetcode.com/problems/count-vowels-permutation/">1220. Count Vowels Permutation</a> <code>Hard</code></p><p>
+</p><h1>Merging Intervals</h1>
+<hr>
+<p></p><p>Generate problem statement for this pattern</p><p>
+</p><h3>Statement</h3>
+<blockquote>
+<p></p><p>Given a set of numbers find an optimal solution for a problem considering the current number and the best you can get from the left and right sides.</p><p>
+</p></blockquote>
+<h3>Approach</h3>
+<blockquote>
+<p></p><p>Find all optimal solutions for every interval and return the best possible answer.</p><p>
+</p></blockquote>
+<pre><code><span class="hljs-comment">// from i to j</span>
+dp[i][j] = dp[i][k] + result[k] + dp[k+<span class="hljs-number">1</span>][j]
+</code></pre>
+<p></p><p>Get the best from the left and right sides and add a solution for the current position.</p><p>
+</p><pre><code><span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> l = <span class="hljs-number">1</span>; l&lt;n; l++) {
+   <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i&lt;n-l; i++) {
+       <span class="hljs-keyword">int</span> j = i+l;
+       <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> k = i; k&lt;j; k++) {
+           dp[i][j] = max(dp[i][j], dp[i][k] + result[k] + dp[k+<span class="hljs-number">1</span>][j]);
+       }
+   }
+}
+ 
+<span class="hljs-keyword">return</span> dp[<span class="hljs-number">0</span>][n<span class="hljs-number">-1</span>]
+</code></pre>
+<h3>Similar Problems</h3>
+<p></p><p><a href="https://leetcode.com/problems/minimum-cost-tree-from-leaf-values/">1130. Minimum Cost Tree From Leaf Values</a> <code>Medium</code></p><p>
+</p><pre><code><span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> l = <span class="hljs-number">1</span>; l &lt; n; ++l) {
+   <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n - l; ++i) {
+       <span class="hljs-keyword">int</span> j = i + l;
+       dp[i][j] = INT_MAX;
+       <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> k = i; k &lt; j; ++k) {
+           dp[i][j] = min(dp[i][j], dp[i][k] + dp[k+<span class="hljs-number">1</span>][j] + maxs[i][k] * maxs[k+<span class="hljs-number">1</span>][j]);
+       }
+   }
+}
+</code></pre>
+<p></p><p><a href="https://leetcode.com/problems/unique-binary-search-trees/">96. Unique Binary Search Trees</a> <code>Medium</code></p><p>
+</p><p><a href="https://leetcode.com/problems/minimum-score-triangulation-of-polygon/">1039. Minimum Score Triangulation of Polygon</a> <code>Medium</code></p><p>
+</p><p><a href="https://leetcode.com/problems/remove-boxes/">546. Remove Boxes</a> <code>Medium</code></p><p>
+</p><p><a href="https://leetcode.com/problems/minimum-cost-to-merge-stones/">1000. Minimum Cost to Merge Stones</a> <code>Medium</code></p><p>
+</p><p><a href="https://leetcode.com/problems/burst-balloons/">312. Burst Balloons</a> <code>Hard</code></p><p>
+</p><p><a href="https://leetcode.com/problems/guess-number-higher-or-lower-ii/">375. Guess Number Higher or Lower II</a> <code>Medium</code></p><p>
+</p><h1>DP on Strings</h1>
+<hr>
+<p></p><p>General problem statement for this pattern can vary but most of the time you are given two strings where lengths of those strings are not big</p><p>
+</p><h3>Statement</h3>
+<blockquote>
+<p></p><p>Given two strings <code>s1</code> and <code>s2</code>, return <code>some result</code>.</p><p>
+</p></blockquote>
+<h3>Approach</h3>
+<blockquote>
+<p></p><p>Most of the problems on this pattern requires a solution that can be accepted in O(n^2) complexity.</p><p>
+</p></blockquote>
+<pre><code><span class="hljs-comment">// i - indexing string s1</span>
+<span class="hljs-comment">// j - indexing string s2</span>
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; ++i) {
+   <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">1</span>; j &lt;= m; ++j) {
+       <span class="hljs-keyword">if</span> (s1[i<span class="hljs-number">-1</span>] == s2[j<span class="hljs-number">-1</span>]) {
+           dp[i][j] = <span class="hljs-comment">/*code*/</span>;
+       } <span class="hljs-keyword">else</span> {
+           dp[i][j] = <span class="hljs-comment">/*code*/</span>;
+       }
+   }
+}
+</code></pre>
+<blockquote>
+<p></p><p>If you are given one string <code>s</code> the approach may little vary</p><p>
+</p></blockquote>
+<pre><code><span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> l = <span class="hljs-number">1</span>; l &lt; n; ++l) {
+   <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n-l; ++i) {
+       <span class="hljs-keyword">int</span> j = i + l;
+       <span class="hljs-keyword">if</span> (s[i] == s[j]) {
+           dp[i][j] = <span class="hljs-comment">/*code*/</span>;
+       } <span class="hljs-keyword">else</span> {
+           dp[i][j] = <span class="hljs-comment">/*code*/</span>;
+       }
+   }
+}
+</code></pre>
+<p></p><p><a href="https://leetcode.com/problems/longest-common-subsequence/">1143. Longest Common Subsequence</a> <code>Medium</code></p><p>
+</p><pre><code><span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; ++i) {
+   <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">1</span>; j &lt;= m; ++j) {
+       <span class="hljs-keyword">if</span> (text1[i<span class="hljs-number">-1</span>] == text2[j<span class="hljs-number">-1</span>]) {
+           dp[i][j] = dp[i<span class="hljs-number">-1</span>][j<span class="hljs-number">-1</span>] + <span class="hljs-number">1</span>;
+       } <span class="hljs-keyword">else</span> {
+           dp[i][j] = max(dp[i<span class="hljs-number">-1</span>][j], dp[i][j<span class="hljs-number">-1</span>]);
+       }
+   }
+}
+</code></pre>
+<p></p><p><a href="https://leetcode.com/problems/palindromic-substrings/">647. Palindromic Substrings</a> <code>Medium</code></p><p>
+</p><pre><code><span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> l = <span class="hljs-number">1</span>; l &lt; n; ++l) {
+   <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n-l; ++i) {
+       <span class="hljs-keyword">int</span> j = i + l;
+       <span class="hljs-keyword">if</span> (s[i] == s[j] &amp;&amp; dp[i+<span class="hljs-number">1</span>][j<span class="hljs-number">-1</span>] == j-i<span class="hljs-number">-1</span>) {
+           dp[i][j] = dp[i+<span class="hljs-number">1</span>][j<span class="hljs-number">-1</span>] + <span class="hljs-number">2</span>;
+       } <span class="hljs-keyword">else</span> {
+           dp[i][j] = <span class="hljs-number">0</span>;
+       }
+   }
+}
+</code></pre>
+<p></p><p><a href="https://leetcode.com/problems/longest-palindromic-subsequence/">516. Longest Palindromic Subsequence</a> <code>Medium</code></p><p>
+</p><p><a href="https://leetcode.com/problems/shortest-common-supersequence/">1092. Shortest Common Supersequence</a> <code>Medium</code></p><p>
+</p><p><a href="https://leetcode.com/problems/edit-distance/">72. Edit Distance</a> <code>Hard</code></p><p>
+</p><p><a href="https://leetcode.com/problems/distinct-subsequences/">115. Distinct Subsequences</a> <code>Hard</code></p><p>
+</p><p><a href="https://leetcode.com/problems/minimum-ascii-delete-sum-for-two-strings/">712. Minimum ASCII Delete Sum for Two Strings</a> <code>Medium</code></p><p>
+</p><p><a href="https://leetcode.com/problems/longest-palindromic-substring/">5. Longest Palindromic Substring</a> <code>Medium</code></p><p>
+</p><h1>Decision Making</h1>
+<hr>
+<p></p><p>The general problem statement for this pattern is forgiven situation decide whether to use or not to use the current state. So, the problem requires you to make a decision at a current state.</p><p>
+</p><h3>Statement</h3>
+<blockquote>
+<p></p><p>Given a set of values find an answer with an option to choose or ignore the current value.</p><p>
+</p></blockquote>
+<h3>Approach</h3>
+<blockquote>
+<p></p><p>If you decide to choose the current value use the previous result where the value was ignored; vice-versa, if you decide to ignore the current value use previous result where value was used.</p><p>
+</p></blockquote>
+<pre><code><span class="hljs-comment">// i - indexing a set of values</span>
+<span class="hljs-comment">// j - options to ignore j values</span>
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt; n; ++i) {
+   <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">1</span>; j &lt;= k; ++j) {
+       dp[i][j] = max({dp[i][j], dp[i<span class="hljs-number">-1</span>][j] + arr[i], dp[i<span class="hljs-number">-1</span>][j<span class="hljs-number">-1</span>]});
+       dp[i][j<span class="hljs-number">-1</span>] = max({dp[i][j<span class="hljs-number">-1</span>], dp[i<span class="hljs-number">-1</span>][j<span class="hljs-number">-1</span>] + arr[i], arr[i]});
+   }
+}
+</code></pre>
+<p></p><p><a href="https://leetcode.com/problems/house-robber/">198. House Robber</a> <code>Easy</code></p><p>
+</p><pre><code><span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt; n; ++i) {
+   dp[i][<span class="hljs-number">1</span>] = max(dp[i<span class="hljs-number">-1</span>][<span class="hljs-number">0</span>] + nums[i], dp[i<span class="hljs-number">-1</span>][<span class="hljs-number">1</span>]);
+   dp[i][<span class="hljs-number">0</span>] = dp[i<span class="hljs-number">-1</span>][<span class="hljs-number">1</span>];
+}
+</code></pre>
+<p></p><p><a href="https://leetcode.com/problems/best-time-to-buy-and-sell-stock/">121. Best Time to Buy and Sell Stock</a> <code>Easy</code></p><p>
+</p><p><a href="https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/">714. Best Time to Buy and Sell Stock with Transaction Fee</a> <code>Medium</code></p><p>
+</p><p><a href="https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/">309. Best Time to Buy and Sell Stock with Cooldown</a> <code>Medium</code></p><p>
+</p><p><a href="https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/">123. Best Time to Buy and Sell Stock III</a> <code>Hard</code></p><p>
+</p><p><a href="https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv/">188. Best Time to Buy and Sell Stock IV</a> <code>Hard</code></p><p>
+</p><p>I hope these tips will be helpful 😊</p></div>
+
+</body>
+</html>
